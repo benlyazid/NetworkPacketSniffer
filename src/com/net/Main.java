@@ -1,27 +1,21 @@
 package com.net;
-import jdk.jfr.DataAmount;
 
 import java.io.*;
 import java.net.*;
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.List;
 import java.lang.ProcessBuilder;
 
 import static java.lang.System.*;
 
 public class Main {
-    networkScan networkScanClass = new networkScan();
+
     static String myIpAddress()
     {
         try
         {
             Socket socket = new Socket();
             socket.connect(new InetSocketAddress("google.com", 80));
-            String ip = socket.getLocalAddress().getHostAddress();
-            return ip;
+            return socket.getLocalAddress().getHostAddress();
         }
         catch (Exception e)
         {
@@ -41,17 +35,13 @@ static String getMacAddressShell(String ip)
         Process process = builder.start();
         InputStream inputStream = process.getInputStream();
         BufferedReader  bufferedReader= new BufferedReader(new InputStreamReader(inputStream));
-        String line = "";
+        String line;
         String[] dataFromLine = new String[3];
-        int lineNumber = 0;
         while ((line = bufferedReader.readLine()) != null)
         {
-            if (lineNumber == 3)
-                dataFromLine = line.split("\\s+");
-            lineNumber++;
-
+            dataFromLine = line.split("\\s+");
         }
-            return dataFromLine[2];
+        return dataFromLine[3];
     }
     catch (IOException e)
     {
@@ -72,8 +62,7 @@ static String  getMacAddress(String ip)  {
             for (int i = 0; i < hardwareAddress.length; i++)
                 // 02x mean add 0 to beginning if is just one digit
                 hexadecimalFormat[i] = String.format("%02X", hardwareAddress[i]);
-           String macAddress = String.join("-", hexadecimalFormat);
-           return macAddress;
+            return String.join("-", hexadecimalFormat);
         }
         catch (Exception exception)
         {
@@ -166,25 +155,27 @@ static boolean sendRequestToIp(String ip)
             String [] dataIp2 = String.valueOf(BroadcastIpBinary).split("\\.", 4);
             for (int i = 0; i < 4; i++)
             {
-                networkIp += (Integer.parseInt(String.valueOf(Integer.valueOf(dataIp[i])), 2));
-                broadcastIp +=(Integer.parseInt(String.valueOf(Integer.valueOf(dataIp2[i])), 2));
+              networkIp = networkIp.concat(String.valueOf(Integer.parseInt(String.valueOf(Integer.valueOf(dataIp[i])), 2)));
+                broadcastIp = broadcastIp.concat(String.valueOf(Integer.parseInt(String.valueOf(Integer.valueOf(dataIp2[i])), 2)));
                 if (i != 3)
                 {
-                    networkIp += (".");
-                    broadcastIp += (".");
+                    networkIp = networkIp.concat(".");
+                    broadcastIp = broadcastIp.concat(".");
                 }
             }
-
+            out.println("Sheck Range Of Host between " + networkIp + " to " + broadcastIp);
+            int numberOfIp = (int) Math.pow(2, 32 - subnet) - 2;
+            int ipCalc = 1;
+            int noIpNumber = 0;
             //get the range of all possible ip host in the network that start from the network ip + 1 to Broadcast - 1
             String currentIp = networkIp;
 
             dataIp2 = (broadcastIp).split("\\.", 4);
             while (true)
             {
-                String[] dataCurrentIp = String.valueOf(currentIp).split("\\.", 4);
-                if (currentIp.equals(broadcastIp)) {
+                String[] dataCurrentIp = currentIp.split("\\.", 4);
+                if (currentIp.equals(broadcastIp) || noIpNumber > 10)
                     break;
-                }
                 //change the next ip
                 if (Integer.parseInt(dataCurrentIp[3]) < 255) {
                     dataCurrentIp[3] = String.valueOf(1 + Integer.parseInt(dataCurrentIp[3]));
@@ -211,17 +202,15 @@ static boolean sendRequestToIp(String ip)
                 currentIp = "";
                 for (String str : dataCurrentIp)
                 {
-                    currentIp += str;
+                    currentIp = currentIp.concat(str);
                     if (rpt < 4) {
                         currentIp += ".";
                     }
                     rpt++;
                 }
                 //Check ip if is in network then save it in the list
-                ArrayList<String> ipList  = new ArrayList<>();
                 if (sendRequestToIp(currentIp))
                 {
-                    ipList.add(currentIp);
                     String ipName = InetAddress.getByName(currentIp).getHostName();
                     String macAddress = getMacAddressShell(currentIp);
                     if (currentIp.equals(myIp))
@@ -234,9 +223,15 @@ static boolean sendRequestToIp(String ip)
                     device.deviceName = ipName;
                     device.DeviceMacAddress = macAddress;
                     deviceList.add(device);
-                    out.println("current ip         " + currentIp + "  Name of Ip is : " + ipName + "  mac Address : " + macAddress);
+                    //out.println("current ip         " + currentIp + "  Name of Ip is : " + ipName + "  mac Address : " + macAddress);
                 }
+                else
+                    noIpNumber++;
+                out.println((ipCalc * 100) / numberOfIp + "%...");
+                ipCalc++;
             }
+            out.println("Searching finish .");
+            out.println("The are " + deviceList.size() + " Devices in your network");
             return deviceList;
         }
         catch (Exception exception)
@@ -246,15 +241,31 @@ static boolean sendRequestToIp(String ip)
         return null;
     }
 
+     static void printALLDevices(ArrayList<deviceInfo> allDevices)
+     {
+         out.println("--------------------------------------------------------------------------------");
+         out.println("| Device Name                    | Device IP            | Device Mac Address   |");
+         out.println("--------------------------------------------------------------------------------");
+         for (deviceInfo device : allDevices)
+         {
+             //String deviceName
+             out.println("| " + String.format("%-30s",device.deviceName) + " | " + String.format("%-20s",device.deviceip) + " | " + String.format("%-20s",device.DeviceMacAddress) + " |");
+             out.println("--------------------------------------------------------------------------------");
+
+         }
+     }
 
 
-    public static void main(String[] args){
+
+    public static void main(String[] args)
+    {
         String myIp = myIpAddress();
         short sub = 24;
-        //findAllIp(myIp, sub);
-        //out.println(getMacAddress("192.168.1.1"));
-       findAllIp(myIp, sub);
-        //out.println(getMacAddressShell(myIp));
+       ArrayList <deviceInfo> allDevices =  findAllIp(myIp, sub);
+       printALLDevices(allDevices);
+     //   getMacAddressShell("192.168.1.1");
     }
+
+
 
 }
