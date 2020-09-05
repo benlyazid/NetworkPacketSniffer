@@ -198,7 +198,7 @@ static boolean sendRequestToIp(String ip)
                     dataCurrentIp[2] = String.valueOf(0);
                     dataCurrentIp[3] = String.valueOf(0);
                 }
-                int rpt = 1;
+            int rpt = 1;
                 currentIp = "";
                 for (String str : dataCurrentIp)
                 {
@@ -219,7 +219,7 @@ static boolean sendRequestToIp(String ip)
                         macAddress = getMacAddress(currentIp);
                     }
                     deviceInfo device = new deviceInfo();
-                    device.deviceip = currentIp;
+                    device.deviceIp = currentIp;
                     device.deviceName = ipName;
                     device.DeviceMacAddress = macAddress;
                     deviceList.add(device);
@@ -249,7 +249,7 @@ static boolean sendRequestToIp(String ip)
          for (deviceInfo device : allDevices)
          {
              //String deviceName
-             out.println("| " + String.format("%-30s",device.deviceName) + " | " + String.format("%-20s",device.deviceip) + " | " + String.format("%-20s",device.DeviceMacAddress) + " |");
+             out.println("| " + String.format("%-30s",device.deviceName) + " | " + String.format("%-20s",device.deviceIp) + " | " + String.format("%-20s",device.DeviceMacAddress) + " |");
              out.println("--------------------------------------------------------------------------------");
 
          }
