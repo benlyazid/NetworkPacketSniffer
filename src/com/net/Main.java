@@ -19,7 +19,7 @@ public class Main {
         }
         catch (Exception e)
         {
-            System.out.println("Error in getting my ip  is : " + e);
+            System.out.println(" error is : " + e);
         }
         return null;
     }
@@ -45,6 +45,7 @@ static String getMacAddressShell(String ip)
     }
     catch (IOException e)
     {
+
         e.printStackTrace();
     }
 
