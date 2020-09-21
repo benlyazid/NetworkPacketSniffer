@@ -33,22 +33,7 @@ public class scan
         }
         catch (Exception e)
         {
-            out.println(e);
-        }
-        return null;
-    }
-
-    static String myIpAddress()
-    {
-        try
-        {
-            Socket socket = new Socket();
-            socket.connect(new InetSocketAddress("google.com", 80));
-            return socket.getLocalAddress().getHostAddress();
-        }
-        catch (Exception e)
-        {
-            System.out.println(" error is : " + e);
+            out.println("Error in getting Ip address :" + e);
         }
         return null;
     }
@@ -198,7 +183,7 @@ public class scan
                     broadcastIp = broadcastIp.concat(".");
                 }
             }
-            out.println("Sheck Range Of Host between " + networkIp + " to " + broadcastIp);
+            out.println("Check Range Of Host between " + networkIp + " to " + broadcastIp);
             int numberOfIp = (int) Math.pow(2, 32 - subnetSize) - 2;
             int ipCalc = 1;
             int noIpNumber = 0;
@@ -271,7 +256,7 @@ public class scan
         }
         catch (Exception exception)
         {
-            out.println("erore in getting all ip : " + exception);
+            out.println("Error in getting all ip : " + exception);
         }
         return null;
     }
@@ -298,7 +283,8 @@ public class scan
          if (sub == null)
              return;
          ArrayList <deviceInfo> allDevices =  findAllIp(myIp, sub);
-         printALLDevices(allDevices);
+         if (allDevices != null)
+            printALLDevices(allDevices);
      }
 
      static String getNetMask()
@@ -306,8 +292,7 @@ public class scan
          try
          {
              List<PcapAddr> lst = capturePackages.device.getAddresses();
-             String netMask = FormatUtils.ip(lst.get(3).getNetmask().getData());
-             return netMask;
+             return FormatUtils.ip(lst.get(3).getNetmask().getData());
          }
          catch (Exception exception)
          {
@@ -315,7 +300,4 @@ public class scan
          }
          return null;
      }
-
-
-
 }

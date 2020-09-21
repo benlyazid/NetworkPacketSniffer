@@ -47,7 +47,6 @@ public class capturePackages
                 System.err.print("Error while opening device for capture: " + errorString.toString());
                 return;
             }
-            System.out.println("device opened");
             //Create packet handler which will receive packets
              PcapPacketHandler packetHandler = (packet, user) ->
             {
@@ -78,12 +77,12 @@ public class capturePackages
         choseInterface();
         out.println("Enter your command");
         Scanner scanner = new Scanner(in);
-        //capture(0, null);
         String cmd;
         //read all command from the user
+        out.println("For more Info check help cmd ");
         while (true)
         {
-            out.print("Script : $ ");
+            out.print("cmd : $ ");
             cmd = scanner.nextLine();
             if (executeCommand(cmd) == 0)
                 return;
@@ -126,7 +125,7 @@ public class capturePackages
                         capture(Integer.parseInt(data[1]), null);
                     break;
                 case "exit":
-                    spoofing.stopAllThred();
+                    spoofing.stopAllThread();
                     return 0;
                 case "scan":
                     scan.getNetworkDevices();
