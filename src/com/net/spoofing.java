@@ -124,6 +124,11 @@ public class spoofing
         for(SpoffingObj obj : SpoffingArr)
             obj.status = false;
     }
+
+    public static void help()
+    {
+
+    }
 }
 
 

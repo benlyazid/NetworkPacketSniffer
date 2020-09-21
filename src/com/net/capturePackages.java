@@ -141,7 +141,7 @@ public class capturePackages
                     spoofing.showAllKickedDevice();
                     break;
                 case "help":
-                    //spoofing.help();
+                    spoofing.help();
                 default:
                     out.println("Command not found");
                     break;
