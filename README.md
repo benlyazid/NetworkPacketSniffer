@@ -4,8 +4,8 @@ NetworkPacketSniffer it's Open-Source project that give to the User all Utils th
 and Scanning his network .
 
 RUN
-    firstly you need to include *.so in your LD_LIBRARY_PATH, then run the project using the makefile using tag all 
-        'make all' .
+    firstly you need to install libcap-dev then include *.so in your LD_LIBRARY_PATH, then run the project using 
+        the makefile using tag all 'make all' .
 
 HOW TO USE
     NetworkPacketSniffer give a lot of utils to the user, so after running the programme it's asking you to choose 

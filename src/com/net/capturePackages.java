@@ -20,6 +20,7 @@ public class capturePackages
     public static void capture(int capture_repeat, String filter)
     {
         try
+
         {
             // For any error msgs
             StringBuilder errorString = new StringBuilder();
