@@ -1,13 +1,13 @@
-NETWORK_PACKET_SNIFFER
+#NETWORK_PACKET_SNIFFER
 
 NetworkPacketSniffer it's Open-Source project that give to the User all Utils that he need for his network for sniffing
 and Scanning his network .
 
-RUN
+###RUN
     firstly you need to install libcap-dev then include *.so in your LD_LIBRARY_PATH, then run the project using 
         the makefile using tag all 'make all' .
 
-HOW TO USE
+###HOW TO USE
     NetworkPacketSniffer give a lot of utils to the user, so after running the programme it's asking you to choose 
         an interface after that you can enter one of these commands :
         
