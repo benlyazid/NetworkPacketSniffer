@@ -4,7 +4,7 @@
     and Scanning his network .
 
 ## RUN
-    firstly you need to install `libcap-dev` then include `*.so` in your `LD_LIBRARY_PATH`, then run the project using 
+    firstly you need to install `libcap-dev` then include '*.so' in your `LD_LIBRARY_PATH`, then run the project using 
         the makefile using tag all `make all` .
 
 ### HOW TO USE
