@@ -10,7 +10,7 @@ firstly you need to install `libcap-dev` then include '*.so' in your `LD_LIBRARY
 
 ## HOW TO USE
 
-NetworkPacketSniffer give a lot of utils to the user, so after running the programme it's asking you to choose 
+**NetworkPacketSniffer** give a lot of utils to the user, so after running the programme it's asking you to choose 
         an interface after that you can enter one of these commands :
         
    `scan` : it's scanning network and return all device conncted in your network in table that conting device name, ip and his mac Address .
